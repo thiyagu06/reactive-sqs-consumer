@@ -32,4 +32,11 @@ dependencies {
 
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+
+    //kotlin coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.3")
+
+    //AWS sdk
+    implementation("software.amazon.awssdk:sqs:2.10.41")
 }
