@@ -14,6 +14,5 @@ interface MessageHandler {
         } catch (e: Exception) {
             MessageDecorator(false, message)
         }
-
     }
 }
