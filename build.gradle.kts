@@ -30,6 +30,10 @@ dependencies {
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.3")
+
+    testImplementation("io.mockk:mockk:1.9.3")
+
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
