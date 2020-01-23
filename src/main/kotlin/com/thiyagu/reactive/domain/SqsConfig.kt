@@ -8,4 +8,6 @@ data class SqsConfig(
 ) {
 
     val maxOfMessageToRetrieved: Int = 10
+
+    val dlqPollFrequency: Int = 10
 }

@@ -34,4 +34,16 @@ class SqsAccessor(private val sqsAsyncClient: SqsAsyncClient, private val sqsCon
             sqsAsyncClient.deleteMessage(deleteMessageRequest).await()
         }
     }
+
+    suspend fun fetchDlqMessages(): List<Message> {
+
+        val receiveMessageRequest: ReceiveMessageRequest = ReceiveMessageRequest
+            .builder()
+            .queueUrl(sqsConfig.deadLetterQueueUrl)
+            .maxNumberOfMessages(sqsConfig.maxOfMessageToRetrieved)
+            .waitTimeSeconds(20)
+            .build()
+
+        return sqsAsyncClient.receiveMessage(receiveMessageRequest).await().messages()
+    }
 }

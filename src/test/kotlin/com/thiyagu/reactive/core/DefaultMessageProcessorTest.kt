@@ -16,11 +16,11 @@ class DefaultMessageProcessorTest {
 
     private val sqsAccessor = mockk<SqsAccessor>()
 
-    private val messageProvider = MessageProvider(1, sqsAccessor)
-
     private val handler = mockk<MessageHandler>()
 
     private val sqsConfig = mockk<SqsConfig>()
+
+    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor)
 
     private val messageProcessor = DefaultMessageProcessor(messageProvider, handler, sqsAccessor, sqsConfig)
 
@@ -28,7 +28,11 @@ class DefaultMessageProcessorTest {
     fun `process should succeed`() = runBlockingTest {
         val messages = mutableListOf<Message>()
 
-        every { sqsConfig.noOfProcessors } returns 10
+        every { sqsConfig.noOfProcessors } returns 1
+
+        every { sqsConfig.noOfPollers } returns 1
+
+        every { sqsConfig.dlqPollFrequency } returns 10
 
         (0..4).forEach {
             val message = Message.builder().body("m$it").receiptHandle("R$it").build()
@@ -58,7 +62,11 @@ class DefaultMessageProcessorTest {
 
         messages.add(failureMessage)
 
-        every { sqsConfig.noOfProcessors } returns 10
+        every { sqsConfig.noOfProcessors } returns 1
+
+        every { sqsConfig.noOfPollers } returns 1
+
+        every { sqsConfig.dlqPollFrequency } returns 10
 
         (0..4).forEach {
             val message = Message.builder().body("m$it").receiptHandle("R$it").build()
