@@ -8,5 +8,4 @@ data class SqsConfig(
 ) {
 
     val maxOfMessageToRetrieved: Int = 10
-    val useLongPolling: Boolean = true
 }

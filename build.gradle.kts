@@ -12,6 +12,8 @@ plugins {
 
     // Apply the java-library plugin to add support for building a CLI application.
     `java-library`
+    id("io.gitlab.arturbosch.detekt") version "1.4.0"
+    jacoco
 }
 
 repositories {
@@ -43,4 +45,27 @@ dependencies {
 
     //AWS sdk
     implementation("software.amazon.awssdk:sqs:2.10.41")
+}
+
+tasks {
+    named<Task>("check") {
+        dependsOn(named<Task>("jacocoTestReport"))
+    }
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        html.isEnabled = true
+        html.destination = file("$buildDir/reports/jacoco")
+    }
+
+    classDirectories.setFrom(
+        sourceSets.main.get().output.asFileTree.matching {
+            exclude("com/thiyagu/reactive/FlowUtilsKt.class")
+            exclude("com/thiyagu/reactive/core/MessageListener.class")
+            exclude("com/thiyagu/reactive/SqsListener.class")
+            exclude("com/thiyagu/reactive/core/MessageHandler.class")
+            exclude("com/thiyagu/reactive/domain/*")
+        }
+    )
 }

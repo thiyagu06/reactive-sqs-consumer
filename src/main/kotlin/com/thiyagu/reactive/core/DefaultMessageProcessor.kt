@@ -2,6 +2,7 @@ package com.thiyagu.reactive.core
 
 import com.thiyagu.reactive.domain.MessageDecorator
 import com.thiyagu.reactive.domain.SqsConfig
+import com.thiyagu.reactive.sqs.SqsAccessor
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
