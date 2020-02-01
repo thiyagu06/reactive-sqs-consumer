@@ -54,10 +54,12 @@ tasks {
 }
 
 tasks.withType<JacocoReport> {
-    reports {
-        html.isEnabled = true
-        html.destination = file("$buildDir/reports/jacoco")
-    }
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+            xml.destination = file("$buildDir/reports/jacoco/jacocoTestReport.xml")
+            html.destination = file("$buildDir/reports/jacoco")
+        }
 
     classDirectories.setFrom(
         sourceSets.main.get().output.asFileTree.matching {
@@ -69,3 +71,4 @@ tasks.withType<JacocoReport> {
         }
     )
 }
+
