@@ -5,6 +5,7 @@ jdk:
 
 stages:
   - name: build
+    if: branch = master OR type = pull_request
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
