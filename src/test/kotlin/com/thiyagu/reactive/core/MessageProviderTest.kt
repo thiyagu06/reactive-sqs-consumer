@@ -64,4 +64,28 @@ class MessageProviderTest {
 
         assertEquals(message, values[0])
     }
+
+    @Test
+    fun `should call fetchMessages N (noOfPollers) times`() = runBlockingTest {
+
+        val message = Message.builder().body("testMessage").receiptHandle("dummy receipt").build()
+
+        val values = mutableListOf<Message>()
+
+        every {sqsConfig.noOfPollers} returns 5
+
+        every { sqsConfig.dlqPollFrequency } returns 5
+
+        coEvery { sqsAccessor.fetchMessages() } returns listOf(message)
+
+        coEvery { sqsAccessor.fetchDlqMessages() } returns emptyList()
+
+        messageProvider.pollMessages().collect { values.add(it) }
+
+        coVerify(exactly = 5) { sqsAccessor.fetchMessages() }
+
+        coVerify(exactly = 1) {sqsAccessor.fetchDlqMessages() }
+
+        assertEquals(message, values[0])
+    }
 }
