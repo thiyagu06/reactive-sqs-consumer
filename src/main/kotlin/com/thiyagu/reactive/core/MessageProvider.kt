@@ -6,11 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import software.amazon.awssdk.services.sqs.model.Message
-import java.util.concurrent.atomic.AtomicInteger
 
-class MessageProvider(private val sqsConfig: SqsConfig, private val sqsAccessor: SqsAccessor) {
-
-    private val pollSequence = AtomicInteger()
+class MessageProvider(private val sqsConfig: SqsConfig, private val sqsAccessor: SqsAccessor,
+                      private val pollingStrategy: PollingStrategy) {
 
     fun pollMessages(): Flow<Message> {
 
@@ -19,9 +17,8 @@ class MessageProvider(private val sqsConfig: SqsConfig, private val sqsAccessor:
             repeat(sqsConfig.noOfPollers) {
                 launch {
                     val messages = sqsAccessor.fetchMessages()
-                    val shouldPollNow =
-                        pollSequence.updateAndGet { value -> (value + 1) % sqsConfig.dlqPollFrequency } == 0
-                    if (shouldPollNow) {
+
+                    if (pollingStrategy.shouldPollNow()) {
                         val dlqMessages = sqsAccessor.fetchDlqMessages()
                         messages.plus(dlqMessages)
                     }

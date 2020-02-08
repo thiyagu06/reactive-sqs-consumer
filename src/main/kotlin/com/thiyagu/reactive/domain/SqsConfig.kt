@@ -6,8 +6,5 @@ data class SqsConfig(
     val sqsUrl: String,
     val deadLetterQueueUrl: String
 ) {
-
     val maxOfMessageToRetrieved: Int = 10
-
-    val dlqPollFrequency: Int = 10
 }
