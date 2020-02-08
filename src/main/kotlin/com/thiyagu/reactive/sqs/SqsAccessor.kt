@@ -10,16 +10,11 @@ import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest
 
 class SqsAccessor(private val sqsAsyncClient: SqsAsyncClient, private val sqsConfig: SqsConfig) {
 
+    private val sqsFetchWaitTime: Int = 20
+
     suspend fun fetchMessages(): List<Message> {
-
-        val receiveMessageRequest: ReceiveMessageRequest = ReceiveMessageRequest
-            .builder()
-            .queueUrl(sqsConfig.sqsUrl)
-            .maxNumberOfMessages(sqsConfig.maxOfMessageToRetrieved)
-            .waitTimeSeconds(20)
-            .build()
-
-        return sqsAsyncClient.receiveMessage(receiveMessageRequest).await().messages()
+        val messageRequest = buildReceiveMessageRequest(sqsConfig.sqsUrl)
+        return sqsAsyncClient.receiveMessage(messageRequest).await().messages()
     }
 
 
@@ -27,23 +22,23 @@ class SqsAccessor(private val sqsAsyncClient: SqsAsyncClient, private val sqsCon
 
         with(messageDecorator.message) {
             val deleteMessageRequest = DeleteMessageRequest
-                .builder()
-                .queueUrl(sqsConfig.sqsUrl)
-                .receiptHandle(this.receiptHandle())
-                .build()
+                    .builder()
+                    .queueUrl(sqsConfig.sqsUrl)
+                    .receiptHandle(this.receiptHandle())
+                    .build()
             sqsAsyncClient.deleteMessage(deleteMessageRequest).await()
         }
     }
 
     suspend fun fetchDlqMessages(): List<Message> {
-
-        val receiveMessageRequest: ReceiveMessageRequest = ReceiveMessageRequest
-            .builder()
-            .queueUrl(sqsConfig.deadLetterQueueUrl)
-            .maxNumberOfMessages(sqsConfig.maxOfMessageToRetrieved)
-            .waitTimeSeconds(20)
-            .build()
-
-        return sqsAsyncClient.receiveMessage(receiveMessageRequest).await().messages()
+        val messageRequest = buildReceiveMessageRequest(sqsConfig.deadLetterQueueUrl)
+        return sqsAsyncClient.receiveMessage(messageRequest).await().messages()
     }
+
+    private fun buildReceiveMessageRequest(sqsUrl: String) = ReceiveMessageRequest
+            .builder()
+            .queueUrl(sqsUrl)
+            .maxNumberOfMessages(sqsConfig.maxOfMessageToRetrieved)
+            .waitTimeSeconds(sqsFetchWaitTime)
+            .build()
 }

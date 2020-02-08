@@ -20,7 +20,9 @@ class DefaultMessageProcessorTest {
 
     private val sqsConfig = mockk<SqsConfig>()
 
-    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor)
+    private val pollingStrategy = mockk<PollingStrategy>()
+
+    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor,pollingStrategy )
 
     private val messageProcessor = DefaultMessageProcessor(messageProvider, handler, sqsAccessor, sqsConfig)
 
@@ -32,7 +34,7 @@ class DefaultMessageProcessorTest {
 
         every { sqsConfig.noOfPollers } returns 1
 
-        every { sqsConfig.dlqPollFrequency } returns 10
+        every { pollingStrategy.shouldPollNow() } returns false
 
         (0..4).forEach {
             val message = Message.builder().body("m$it").receiptHandle("R$it").build()
@@ -66,7 +68,9 @@ class DefaultMessageProcessorTest {
 
         every { sqsConfig.noOfPollers } returns 1
 
-        every { sqsConfig.dlqPollFrequency } returns 10
+        coEvery { sqsAccessor.fetchDlqMessages() } returns emptyList()
+
+        every { pollingStrategy.shouldPollNow() } returns true
 
         (0..4).forEach {
             val message = Message.builder().body("m$it").receiptHandle("R$it").build()

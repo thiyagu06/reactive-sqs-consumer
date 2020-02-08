@@ -19,7 +19,9 @@ class MessageProviderTest {
 
     private val sqsConfig = mockk<SqsConfig>()
 
-    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor)
+    private val pollingStrategy = mockk<PollingStrategy>()
+
+    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor, pollingStrategy)
 
     @Test
     fun `test able to receive message`() = runBlockingTest {
@@ -30,7 +32,7 @@ class MessageProviderTest {
 
         every {sqsConfig.noOfPollers} returns 1
 
-        every { sqsConfig.dlqPollFrequency } returns 10
+        every { pollingStrategy.shouldPollNow() } returns false
 
         coEvery { sqsAccessor.fetchMessages() } returns listOf(message)
 
@@ -50,7 +52,7 @@ class MessageProviderTest {
 
         every {sqsConfig.noOfPollers} returns 1
 
-        every { sqsConfig.dlqPollFrequency } returns 1
+        every { pollingStrategy.shouldPollNow() } returns false
 
         coEvery { sqsAccessor.fetchMessages() } returns listOf(message)
 
@@ -60,7 +62,7 @@ class MessageProviderTest {
 
         coVerify(exactly = 1) { sqsAccessor.fetchMessages() }
 
-        coVerify(exactly = 1) {sqsAccessor.fetchDlqMessages() }
+        coVerify(exactly = 0) {sqsAccessor.fetchDlqMessages() }
 
         assertEquals(message, values[0])
     }
@@ -74,7 +76,7 @@ class MessageProviderTest {
 
         every {sqsConfig.noOfPollers} returns 5
 
-        every { sqsConfig.dlqPollFrequency } returns 5
+        every { pollingStrategy.shouldPollNow() } returns true
 
         coEvery { sqsAccessor.fetchMessages() } returns listOf(message)
 
@@ -84,7 +86,7 @@ class MessageProviderTest {
 
         coVerify(exactly = 5) { sqsAccessor.fetchMessages() }
 
-        coVerify(exactly = 1) {sqsAccessor.fetchDlqMessages() }
+        coVerify(exactly = 5) {sqsAccessor.fetchDlqMessages() }
 
         assertEquals(message, values[0])
     }
