@@ -6,6 +6,9 @@ class DlqPollingStrategy(private val dlqPollingFrequency: Int) : PollingStrategy
 
     private val pollSequence = AtomicInteger()
 
-    override fun shouldPollNow(): Boolean =
-            pollSequence.updateAndGet { value -> (value + 1)}  % dlqPollingFrequency  == 0
+    override fun shouldPollNow(): Boolean {
+        val currentSequence =  pollSequence.updateAndGet { value -> (value + 1)}
+        return currentSequence  % dlqPollingFrequency  == 0
+    }
+
 }
