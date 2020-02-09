@@ -1,7 +1,7 @@
-package com.thiyagu.reactive.sqs
+package org.thiyagu.reactive.sqs
 
-import com.thiyagu.reactive.domain.MessageDecorator
-import com.thiyagu.reactive.domain.SqsConfig
+import org.thiyagu.reactive.domain.MessageDecorator
+import org.thiyagu.reactive.domain.SqsConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

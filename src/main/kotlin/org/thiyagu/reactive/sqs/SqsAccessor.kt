@@ -1,7 +1,7 @@
-package com.thiyagu.reactive.sqs
+package org.thiyagu.reactive.sqs
 
-import com.thiyagu.reactive.domain.MessageDecorator
-import com.thiyagu.reactive.domain.SqsConfig
+import org.thiyagu.reactive.domain.MessageDecorator
+import org.thiyagu.reactive.domain.SqsConfig
 import kotlinx.coroutines.future.await
 import software.amazon.awssdk.services.sqs.SqsAsyncClient
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest

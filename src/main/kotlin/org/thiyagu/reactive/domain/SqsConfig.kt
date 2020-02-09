@@ -1,4 +1,4 @@
-package com.thiyagu.reactive.domain
+package org.thiyagu.reactive.domain
 
 data class SqsConfig(
     val noOfPollers: Int = 1,

@@ -1,8 +1,8 @@
-package com.thiyagu.reactive.core
+package org.thiyagu.reactive.core
 
-import com.thiyagu.reactive.domain.MessageDecorator
-import com.thiyagu.reactive.domain.SqsConfig
-import com.thiyagu.reactive.sqs.SqsAccessor
+import org.thiyagu.reactive.domain.MessageDecorator
+import org.thiyagu.reactive.domain.SqsConfig
+import org.thiyagu.reactive.sqs.SqsAccessor
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -22,7 +22,7 @@ class DefaultMessageProcessorTest {
 
     private val pollingStrategy = mockk<PollingStrategy>()
 
-    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor,pollingStrategy )
+    private val messageProvider = MessageProvider(sqsConfig, sqsAccessor, pollingStrategy)
 
     private val messageProcessor = DefaultMessageProcessor(messageProvider, handler, sqsAccessor, sqsConfig)
 

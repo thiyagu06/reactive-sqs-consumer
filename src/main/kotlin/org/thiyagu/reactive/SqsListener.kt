@@ -1,7 +1,7 @@
-package com.thiyagu.reactive
+package org.thiyagu.reactive
 
-import com.thiyagu.reactive.core.DefaultMessageProcessor
-import com.thiyagu.reactive.core.MessageListener
+import org.thiyagu.reactive.core.DefaultMessageProcessor
+import org.thiyagu.reactive.core.MessageListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -12,7 +12,7 @@ import kotlin.coroutines.CoroutineContext
 
 class SqsListener(private val defaultMessageProcessor: DefaultMessageProcessor,
                   private val threadPool: ExecutorService = Executors.newFixedThreadPool(2)) : CoroutineScope,
-    MessageListener {
+        MessageListener {
 
     private val job = Job()
 
