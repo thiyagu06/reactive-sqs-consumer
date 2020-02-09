@@ -12,11 +12,11 @@ This has been built from the scratch with a goal making it easy to customizable 
 The distinguished feature of [reactive sqs consumer](https://github.com/thiyagu06/reactive-sqs-consumer) are
 
  * Its truly non blocking implementation to maximize throughput and optimize resource utilization by leveraging [Asynchronous AWS SDK for Java 2.0](https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/basics-async.html) and [Kotlin > Flow](https://kotlinlang.org/docs/reference/coroutines/flow.html)
- * automatic handling of back pressure between [MessageProvider](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/com/thiyagu/reactive/core/MessageProvider.kt) and [MessageHandler](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/com/thiyagu/reactive/core/MessageHandler.kt) by using kotlin flows.
- * customize the no of concurrent [MessageProvider](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/com/thiyagu/reactive/core/MessageProvider.kt) and concurrent no of [MessageHandler](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/com/thiyagu/reactive/core/MessageHandler.kt) through configuration.
+ * automatic handling of back pressure between [MessageProvider](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/org/thiyagu/reactive/core/MessageProvider.kt) and [MessageHandler](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/org/thiyagu/reactive/core/MessageHandler.kt) by using kotlin flows.
+ * customize the no of concurrent [MessageProvider](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/org/thiyagu/reactive/core/MessageProvider.kt) and concurrent no of [MessageHandler](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/org/thiyagu/reactive/core/MessageHandler.kt) through configuration.
  * abstraction of complexity for fetching and deleting the sqs messages.
  * automatic exception handling of messages using [Dead-Letter Queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html)
- * better control of defining polling logic for DLQ message by implementing [PollingStrategy](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/com/thiyagu/reactive/core/PollingStrategy.kt)
+ * better control of defining polling logic for DLQ message by implementing [PollingStrategy](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/main/kotlin/org/thiyagu/reactive/core/PollingStrategy.kt)
  * reduce cost by leveraging [Long Polling](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html)   
  
 ## Design

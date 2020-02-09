@@ -1,4 +1,4 @@
-package com.thiyagu.reactive.core
+package org.thiyagu.reactive.core
 
 import org.junit.Test
 import kotlin.test.assertFalse

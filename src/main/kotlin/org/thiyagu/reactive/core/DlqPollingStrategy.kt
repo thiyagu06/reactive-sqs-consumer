@@ -1,4 +1,4 @@
-package com.thiyagu.reactive.core
+package org.thiyagu.reactive.core
 
 import java.util.concurrent.atomic.AtomicInteger
 

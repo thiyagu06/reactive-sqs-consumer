@@ -1,7 +1,7 @@
-package com.thiyagu.reactive.core
+package org.thiyagu.reactive.core
 
-import com.thiyagu.reactive.domain.SqsConfig
-import com.thiyagu.reactive.sqs.SqsAccessor
+import org.thiyagu.reactive.domain.SqsConfig
+import org.thiyagu.reactive.sqs.SqsAccessor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch

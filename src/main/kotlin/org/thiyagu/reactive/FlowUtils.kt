@@ -1,4 +1,4 @@
-package com.thiyagu.reactive
+package org.thiyagu.reactive
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

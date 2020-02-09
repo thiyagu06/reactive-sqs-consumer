@@ -1,6 +1,6 @@
-package com.thiyagu.reactive.core
+package org.thiyagu.reactive.core
 
-import com.thiyagu.reactive.domain.MessageDecorator
+import org.thiyagu.reactive.domain.MessageDecorator
 import software.amazon.awssdk.services.sqs.model.Message
 
 interface MessageHandler {
