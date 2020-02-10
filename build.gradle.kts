@@ -30,18 +30,19 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation(kotlin("test"))
 
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.3")
 
     testImplementation("io.mockk:mockk:1.9.3")
 
     // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation(kotlin("test-junit5"))
 
     //kotlin coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.4.2")
 
     //AWS sdk
     implementation("software.amazon.awssdk:sqs:2.10.41")
@@ -50,6 +51,9 @@ dependencies {
 tasks {
     named<Task>("check") {
         dependsOn(named<Task>("jacocoTestReport"))
+    }
+    named<Test>("test") {
+        useJUnitPlatform()
     }
 }
 
@@ -71,4 +75,3 @@ tasks.withType<JacocoReport> {
         }
     )
 }
-

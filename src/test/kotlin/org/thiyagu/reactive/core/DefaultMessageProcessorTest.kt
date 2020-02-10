@@ -9,7 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import software.amazon.awssdk.services.sqs.model.Message
 
 class DefaultMessageProcessorTest {
