@@ -1,6 +1,7 @@
 package org.thiyagu.reactive.core
 
-import org.junit.Test
+
+import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
