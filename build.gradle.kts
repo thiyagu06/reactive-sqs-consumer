@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0"
 group = "io.github.thiyagu06"
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
