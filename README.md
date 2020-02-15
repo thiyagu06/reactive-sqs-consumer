@@ -26,3 +26,28 @@ This library is divided into four sub components each with its own responsibilit
 ![Design Diagram](./docs/SqsConsumer.png "Design Diagram")
 
 ## usage
+
+ 1. See [ExampleUsage.kt] (https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/it/kotlin/org/thiyagu/reactive/ExampleUsage.kt) for how to use this library.
+ 
+ 2. To use with dropwizard framework if we want to start/stop the listener during the application startup and shutdown
+    
+  ```   val sqsConfig = SqsConfig(1, 2, queueCreated.queueUrl, "")
+              val sqsClient = SqsAsyncClient.builder().endpointOverride(URI(Localstack.INSTANCE.endpointSQS)).build()
+              sqs.sendMessage(com.amazonaws.services.sqs.model.SendMessageRequest(queueCreated.queueUrl,"message"))
+              val sqsAccessor = SqsAccessor(sqsClient, sqsConfig)
+              val messageProvider = MessageProvider(sqsConfig, sqsAccessor, DlqNoPollingStrategy())
+              val messageProcessor = DefaultMessageProcessor(messageProvider, LoggingMessageHandler(), sqsAccessor, sqsConfig)
+              MessageListener sqsListener = SqsListener(messageProcessor)
+              environment.lifecycle().manage(new Managed() {
+                      @Override
+                      public void start() {
+                      sqsListener.start()
+                      }
+          
+                      @Override
+                      public void stop() {
+                          sqsListener.stop();
+                      }
+                  });
+              }  
+``` 

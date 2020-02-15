@@ -1,19 +1,22 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-version = "0.1.0-SNAPSHOT"
-
+version = "1.0.0"
+group = "io.github.thiyagu06"
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
     `java-library`
     id("io.gitlab.arturbosch.detekt") version "1.4.0"
     jacoco
+    `maven-publish`
+    signing
 }
 
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 sourceSets {
@@ -90,3 +93,58 @@ val integrationTest = task<Test>("integrationTest") {
 }
 
 tasks.check { dependsOn(integrationTest) }
+
+val sourcesJar by tasks.creating(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.getByName("main").allSource)
+}
+val ossrhUsername: String by project
+val ossrhPassword: String by project
+val projectName="reactive-sqs-consumer"
+
+publishing {
+    publications {
+        create<MavenPublication>("lib") {
+            artifactId = projectName
+            from(components["java"])
+            artifact(sourcesJar)
+            pom {
+                name.set(projectName)
+                description.set("reactive sqs consumer using kotlin flow")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("thiyagu06")
+                        name.set("Thiyagu")
+                        email.set("thiyagu103@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/thiyagu06/reactive-sqs-consumer.git")
+                    developerConnection.set("scm:git:ssh://github.com/thiyagu06/reactive-sqs-consumer.git")
+                    url.set("https://github.com/thiyagu06/reactive-sqs-consumer")
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+            val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots")
+            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["lib"])
+}
