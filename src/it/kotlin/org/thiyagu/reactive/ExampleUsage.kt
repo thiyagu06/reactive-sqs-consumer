@@ -11,6 +11,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty
 import org.junit.jupiter.api.extension.ExtendWith
 import org.thiyagu.reactive.core.DefaultMessageProcessor
 import org.thiyagu.reactive.core.MessageHandler
@@ -23,9 +25,9 @@ import software.amazon.awssdk.services.sqs.model.Message
 import java.net.URI
 
 
-@Disabled
 @ExtendWith(LocalstackDockerExtension::class)
 @LocalstackDockerProperties(randomizePorts = true, services = ["sqs"])
+@DisabledIfEnvironmentVariable(named = "CI_SERVER", matches = "true")
 class ExampleUsage {
 
     private lateinit var sqsListener: SqsListener
