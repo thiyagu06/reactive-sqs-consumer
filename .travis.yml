@@ -1,28 +1,44 @@
 language: kotlin
-
 jdk:
-  - oraclejdk13
-
+- oraclejdk13
 stages:
-  - name: build
-    if: branch = master OR type = pull_request
-
+- name: build
+- name: publish
+  if: branch = master AND type != pull_request
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - "$HOME/.gradle/caches/"
-    - "$HOME/.gradle/wrapper/"
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 jobs:
   include:
-    - stage: build
-      before_install:
-        - chmod +x gradlew
-        - chmod +x gradle/wrapper/gradle-wrapper.jar
-      script:
-        - ./gradlew clean build test
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
+  - stage: build
+    before_install:
+    - chmod +x gradlew
+    - chmod +x gradle/wrapper/gradle-wrapper.jar
+    script:
+    - "./gradlew clean build test"
+    after_success:
+    - bash <(curl -s https://codecov.io/bash)
+  - stage: publish
+    script:
+      - ./gradlew clean build test publish
+        -Psigning.keyId="$GPG_KEY_ID"
+        -Psigning.password="$GPG_PASSPHRASE"
+        -Psigning.secretKeyRingFile="$TRAVIS_BUILD_DIR/secret.gpg"
+        -PossrhUsername="$SONATYPE_USERNAME"
+        -PossrhPassword="$SONATYPE_PASSWORD"
+    after_success:
+      - bash <(curl -s https://codecov.io/bash)
+    before_install:
+    - openssl aes-256-cbc -K $encrypted_c76e7fd9c81f_key -iv $encrypted_c76e7fd9c81f_iv
+      -in maven-deploy.asc.enc -out maven-deploy.asc -d
+    - chmod +x gradlew
+    - chmod +x gradle/wrapper/gradle-wrapper.jar
+    env:
+      - secure: i4Nf6V6bPRyCAKOqGo6AzduJCrPYJHmOBJ3z/FDx0i591a1SHvmdlawjTLhK350oKWkh9Pmo3oGKClZbEXV98AWHc3H10yq4Z3vPx7R7Rw+Rc5f88wBePpIOlSG1S/Ryd6D11qEZMd3qLUnSxmaz8c+f2tGPdONuMr12QKi2ljtSyj6j83yDhebFp+moF5wfdj/W9S+y0eFJ2XVRa2xePNjMInlcXpNtvpxMIcK08ncIS6s0A8nvR25r9NxKNfki9lG6+zd3YXNCiKay9xaz4tHPNnm6PsVddY5Ctfa9o9MGvEpseJQ6YXOXRqJMlT6t+gJyVQ4Ujvc9pLoezqCm/yjSzV2PdHXhhTcLEVJJhXxWwH8f7fY38kPkcsw8uFzKpSqQAJSsbgDIshSafSJelKz3KZ9mYk76solGOBydJvLHGgCNYdkXFVzppiSP6Vacm+r/I3usWY6CfQiOlzn/Y6Dwgl2Mula7YvwLbF6IjKxB3OEND3XmqoKVcQ4O1TRHL9Vp9Dp5+peNKRpVDTD+80wO7xsFx2w6MLhNQdBpyqjO0cBEwfNSLnP/LpE4NyxqZ7FK3UmtFqJSL+JsM4YACQfmP5lesjaVMNvKcD/U5/pfVe3zJqT8cdxE5LccmNqi9ilL+hBs7hc3f4mYV8sO5Kc4XxThorX1pRskbEhSb20=
+      - secure: SRrsQLcBrqKA3E00AGoP6BBrV0LM8Fmzd0Q8qd6wsKvaK9EE6Ksp83ADytvuU5Wih7lC3OVyvbFO05Tl12Wqfa/tv25K1yvf1sLhdyMoQzNoem50vOsj5s0auMMx4o13LD5jTK6UUAEt8mj6eHGKwatpYwU1AlvKhyE5NSFk2cfu8uw/xk57AXZcU4aBvr3xLvEYjWesAVwekJJC1t69C8LbNI7F9tK9w/4iZfUL+PMGF6ow7Nf1b+sdSINRkuR4BJHHlD8EtKlxuOUchettD7h/qiyCAdz8GSeHLScLcozxG3oyywuogScLOgVa7Vw0Etq2WjJGUybgXp4qAYGIEmA17Vxav5slHDZ7iXPCIGu2ypvqdXW3pgjuG0CVxFrKW86r5xO/f/I5TtwEwznX9gLYDnyo0zXHaw5KlTeIqHDKXk7IBUHzkkm17MMj1x21K14tsrbEcr+Hrk5P2jV1GkhcTDtpAEmtVQWVMreWdphN9XDfz1YsjBo/ZnTUMAVJ4dQjQW3h2zY4otvyV9cnNvDdajD5YLoxRTM4MFidbnou199jo8kfNZreOTu9pK5S9UsZNvN5ehMpuv0jsYEMeel/sAx7Q4rJf0o4ly9j/69KLwsUcEBrCtZx+blIBN1F+A7+JRp9vkoHe1fnRswtoNFfYp8Rz3SANpq97tubmLk=
+      - secure: a6Ltg1Gxf0pHRhbxjyYYu2JR3xx87DJq84eeVpxNrqCItOOP/ourgbw/BSiEaaUZZD4TGzGJLvkDViuF6ALv6KDd5tGAt2DU3zGu77XHjx3eW3Z4XHSJKjCpDZ95C5CXSs7eKwlGldra7EdN6b09ARWIrG9xG+edFrhgLwjm0C0Z0YaicqPNZ6ceR9/qeogEL+e3WwOTVYmnMDuScziM1qSMw0qDOiJajsb8kaoNZ6S9WrRMDX8EGZJl5WinXKoswhZKx0AgoAMP5v3RGiXyrAzVpTggOda+hKrDClQCFf48IhyD+SIpCeZkBUFau34uXUfahVnxZMbX/dSlu85ra33YAr4jiRv7Fvf8CBVNfoTwMHrkJdfueH8uP4NVUw787Q48Il0gZHjUmYlj43H0oAklo1VJJSZBFQDjJQSq/SHP5qysFKLKAjfaEyK+h9laSC0hcD4axFwB8wrN6pn+vSAOqJ2F2CcnzQh1bSMwBvM/HBEVjx9vGAiAbH5jWayKkVu/BSuYX2aZTa/fFK9zBiD0VzZ6s5ayw5EOrAq+FpwAXkDceRzFyOov2nWAtaehbZtXaSQEEDYctd0rC02hOPmpUXYjZG37fuTIAszY23WqoK7hIrPuIAEBoV+/9qhlyhIpy1AfSdlC119XzU1vOFHVELAfTJ3XJG0i8uQPjFs=
+      - secure: upzAsSBdDJ8XOopYk4rb3X7Y1RyBNSxrGkW3G16rDh+dqg1c5wtjvOZhzHUEkrzBdbMsT22Rb66yhoxcB1Q4OcShHdxaVldegDTbKWzBzzLSsEuFmCEC5XPVckbNjtPohqNI1dg8fFtFiy2Z3CZIYKrzvREAqRYBAwQO6esv9GzuJE/CoVzxqeEueM+ejlm/LN/TObHim9c9FynQ3t4McbwYVT9xJODLJ/ZJfB89pmcHVdTdx/7f6GGgHGdQ6g+XsTb+Aizsf2ehnPKLFz/l1B1eyXeksaTDAI9M31kBlNA6kj7WuyPwnWv0aOlRmUt+4BFKJed0TLhNMpC95F0vJNnTPFxkRLqjDK3FRLDoWZ5ozNpW4guq+pWeZ7TIAytXMJFF85Uuka6J+vE3thFBJKDdeegaW2ilfbLUIzCzBgSP/YUM8YPCg3uWBTzAryb6O6v+l70rgRV9USGOx73OXN9+6ULP2Ml+owj1xoAqqm+GrL97LuXCapNegxvuMOYRtMsgkVDyImu4Hufu6lxyDvBqRz4xXqGJr9wMXG9GuSk4nhNlEP+1KAOQtnce/mIaMx476kGyWMmUt563uYvqTW74+L4q+ztcklgkxTgxDZnlILVvVdUqkgFRQuTwzIjx1CcazNduR+0f6/G/pvJ0AEC5mzpvrT4iWC0CqSCfpXs=
