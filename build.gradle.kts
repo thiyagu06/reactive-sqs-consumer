@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-version = "1.0.0"
+version = "1.0.1"
 group = "io.github.thiyagu06"
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
@@ -10,6 +10,8 @@ plugins {
     jacoco
     `maven-publish`
     signing
+    id("io.codearte.nexus-staging") version "0.21.2"
+    id ("org.jetbrains.dokka") version "0.10.1"
 }
 
 repositories {
@@ -98,9 +100,20 @@ val sourcesJar by tasks.creating(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.getByName("main").allSource)
 }
+
+val javadocJar by tasks.creating(Jar::class) {
+    archiveClassifier.set ("javadoc")
+    from("$buildDir/reports/javadoc")
+}
+
 val ossrhUsername: String by project
 val ossrhPassword: String by project
 val projectName="reactive-sqs-consumer"
+
+nexusStaging {
+    username = ossrhUsername
+    password = ossrhPassword
+}
 
 publishing {
     publications {
@@ -108,9 +121,11 @@ publishing {
             artifactId = projectName
             from(components["java"])
             artifact(sourcesJar)
+            artifact(javadocJar)
             pom {
                 name.set(projectName)
                 description.set("reactive sqs consumer using kotlin flow")
+                url.set("https://github.com/thiyagu06/reactive-sqs-consumer")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
