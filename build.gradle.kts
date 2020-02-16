@@ -76,11 +76,12 @@ tasks.withType<JacocoReport> {
 
     classDirectories.setFrom(
             sourceSets.main.get().output.asFileTree.matching {
-                exclude("com/thiyagu/reactive/FlowUtilsKt.class")
-                exclude("com/thiyagu/reactive/core/MessageListener.class")
-                exclude("com/thiyagu/reactive/SqsListener.class")
-                exclude("com/thiyagu/reactive/core/MessageHandler.class")
-                exclude("com/thiyagu/reactive/domain/*")
+                exclude("org/thiyagu/reactive/FlowUtilsKt.class")
+                exclude("org/thiyagu/reactive/core/MessageListener.class")
+                exclude("org/thiyagu/reactive/SqsListener.class")
+                exclude("org/thiyagu/reactive/core/MessageHandler.class")
+                exclude("org/thiyagu/reactive/domain/*")
+                exclude()
             }
     )
 }
