@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-version = "1.0.1"
+version = "1.1"
 group = "io.github.thiyagu06"
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
@@ -15,8 +15,6 @@ plugins {
 }
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
     mavenCentral()
 }
@@ -161,6 +159,11 @@ publishing {
     }
 }
 
+extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
+
 signing {
+    setRequired({
+        (project.extra["isReleaseVersion"] as Boolean) && gradle.taskGraph.hasTask("publish")
+    })
     sign(publishing.publications["lib"])
 }
