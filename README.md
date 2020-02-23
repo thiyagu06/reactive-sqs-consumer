@@ -3,6 +3,9 @@
 [![Kotlin version badge](https://img.shields.io/badge/kotlin-1.3-blue.svg)](https://kotlinlang.org/docs/reference/whatsnew13.html) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![codebeat badge](https://codebeat.co/badges/d8f4dd3e-5082-40cc-bb25-75141a282c62)](https://codebeat.co/projects/github-com-thiyagu06-reactive-sqs-consumer-master)
+[![CircleCI](https://circleci.com/gh/thiyagu06/reactive-sqs-consumer.svg?style=svg)](https://circleci.com/gh/thiyagu06/reactive-sqs-consumer)
+[![codecov](https://codecov.io/gh/thiyagu06/reactive-sqs-consumer/branch/master/graph/badge.svg)](https://codecov.io/gh/thiyagu06/reactive-sqs-consumer)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.thiyagu06/reactive-sqs-consumer.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.thiyagu06%22%20AND%20a:%22reactive-sqs-consumer%22)
 
 ## Introduction
 
@@ -27,27 +30,4 @@ This library is divided into four sub components each with its own responsibilit
 
 ## usage
 
- 1. See [ExampleUsage.kt] (https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/it/kotlin/org/thiyagu/reactive/ExampleUsage.kt) for how to use this library.
- 
- 2. To use with dropwizard framework if we want to start/stop the listener during the application startup and shutdown
-    
-  ```   val sqsConfig = SqsConfig(1, 2, queueCreated.queueUrl, "")
-              val sqsClient = SqsAsyncClient.builder().endpointOverride(URI(Localstack.INSTANCE.endpointSQS)).build()
-              sqs.sendMessage(com.amazonaws.services.sqs.model.SendMessageRequest(queueCreated.queueUrl,"message"))
-              val sqsAccessor = SqsAccessor(sqsClient, sqsConfig)
-              val messageProvider = MessageProvider(sqsConfig, sqsAccessor, DlqNoPollingStrategy())
-              val messageProcessor = DefaultMessageProcessor(messageProvider, LoggingMessageHandler(), sqsAccessor, sqsConfig)
-              MessageListener sqsListener = SqsListener(messageProcessor)
-              environment.lifecycle().manage(new Managed() {
-                      @Override
-                      public void start() {
-                      sqsListener.start()
-                      }
-          
-                      @Override
-                      public void stop() {
-                          sqsListener.stop();
-                      }
-                  });
-              }  
-``` 
+ See [ExampleUsage.kt](https://github.com/thiyagu06/reactive-sqs-consumer/blob/master/src/it/kotlin/org/thiyagu/reactive/ExampleUsage.kt) for how to use this library.

@@ -62,17 +62,16 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "12"
     }
-}
 
-tasks.withType<JacocoReport> {
-    reports {
-        xml.isEnabled = true
-        html.isEnabled = true
-        xml.destination = file("$buildDir/reports/jacoco/jacocoTestReport.xml")
-        html.destination = file("$buildDir/reports/jacoco")
-    }
+    withType<JacocoReport> {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+            xml.destination = file("$buildDir/reports/jacoco/jacocoTestReport.xml")
+            html.destination = file("$buildDir/reports/jacoco")
+        }
 
-    classDirectories.setFrom(
+        classDirectories.setFrom(
             sourceSets.main.get().output.asFileTree.matching {
                 exclude("org/thiyagu/reactive/FlowUtilsKt.class")
                 exclude("org/thiyagu/reactive/core/MessageListener.class")
@@ -81,7 +80,8 @@ tasks.withType<JacocoReport> {
                 exclude("org/thiyagu/reactive/domain/*")
                 exclude()
             }
-    )
+        )
+    }
 }
 
 val integrationTest = task<Test>("integrationTest") {
@@ -93,7 +93,7 @@ val integrationTest = task<Test>("integrationTest") {
     useJUnitPlatform()
 }
 
-tasks.check { dependsOn(integrationTest) }
+//tasks.check { dependsOn(integrationTest) }
 
 val sourcesJar by tasks.creating(Jar::class) {
     archiveClassifier.set("sources")
