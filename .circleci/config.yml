@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  codecov: codecov/codecov@1.0.2
+  codecov: codecov/codecov@1.0.5
 executors:
   build_env:
     machine:
@@ -73,17 +73,17 @@ jobs:
       - save_cache: *save_jdk_cache
       - save_cache: *save_dep_cache
       - save_cache: *save_gradle_binary
+      - codecov/upload:
+          file:   ~/project/build/reports/jacoco/jacoco*.xml
       - store_test_results:
           path: ~/project/build/test-results
           when: always
       - store_artifacts:
-          path: ~/project/build/jacoco
+          path: ~/project/build/reports/jacoco
       - persist_to_workspace:
           root: ~/project
           paths:
             - .
-      - codecov/upload:
-          file:   ~/project/build/jacoco
   publish:
     executor: build_env
     environment:
