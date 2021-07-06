@@ -47,7 +47,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.7.2")
     integrationTestImplementation("org.testcontainers:localstack:1.12.5")
     integrationTestImplementation("cloud.localstack:localstack-utils:0.2.0")
 }
