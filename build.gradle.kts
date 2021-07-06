@@ -10,7 +10,7 @@ plugins {
     jacoco
     `maven-publish`
     signing
-    id("io.codearte.nexus-staging") version "0.21.2"
+    id("io.codearte.nexus-staging") version "0.30.0"
     id ("org.jetbrains.dokka") version "0.10.1"
 }
 
