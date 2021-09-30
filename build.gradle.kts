@@ -46,7 +46,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1-native-mt")
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.4.2")
     integrationTestImplementation("org.testcontainers:localstack:1.15.3")
     integrationTestImplementation("cloud.localstack:localstack-utils:0.2.13")
