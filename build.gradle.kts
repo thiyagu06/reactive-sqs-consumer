@@ -6,7 +6,7 @@ group = "io.github.thiyagu06"
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.20"
     `java-library`
-    id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    id("io.gitlab.arturbosch.detekt") version "1.20.0"
     jacoco
     `maven-publish`
     signing
