@@ -41,7 +41,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("software.amazon.awssdk:sqs:2.16.95")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.3-native-mt")
     testImplementation(kotlin("test"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1-native-mt")
     testImplementation("io.mockk:mockk:1.12.0")
