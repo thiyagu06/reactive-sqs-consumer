@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 version = "1.1"
 group = "io.github.thiyagu06"
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.5.20"
+    id("org.jetbrains.kotlin.jvm") version "1.7.0"
     `java-library`
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
     jacoco
